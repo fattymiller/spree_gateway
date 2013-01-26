@@ -1,8 +1,11 @@
+require Rails.root.join("lib/active_merchant/billing/gateways/eway_rapid")
+
 module Spree
   class Gateway::EwayRapid < Gateway
     preference :login, :string
+    preference :password, :string
     
-    attr_accessible :preferred_login
+    attr_accessible :preferred_login, :preferred_password
 
     # Note: EWay supports purchase method only (no authorize method).
     # Ensure Spree::Config[:auto_capture] is set to true
@@ -12,7 +15,10 @@ module Spree
     end
     
     def purchase(money, creditcard, gateway_options)
-      gateway_options[:ip] = current_user.current_sign_in_ip if current_user.respond_to?(:current_sign_in_ip)
+      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+      puts gateway_options.inspect
+      puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+      
       provider.purchase(money, creditcard, gateway_options)
     end
 
